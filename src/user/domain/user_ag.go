@@ -14,6 +14,13 @@ type UserAG struct {
 	email shared_domain.EmailIDValueVO
 }
 
+type userDTO struct {
+	ID string
+	Age int
+	Name string
+	Email stri
+}
+
 func NewUser(
 	id shared_domain.UserIDValueVO,
 	name *vo.NameVO,

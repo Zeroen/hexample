@@ -3,13 +3,20 @@ package infrastructure
 import (
 	"github.com/labstack/echo"
 	"hexample.com/src/shared/shared_domain"
+	application "hexample.com/src/user/application/get_id"
+	"hexample.com/src/user/domain"
+	"net/http"
 )
 
 type GetUserByIDEchoController struct {
+	uc *application.GetUserByIDUC
 }
 
 func NewGetUserByIDEchoController() *GetUserByIDEchoController {
-	return &GetUserByIDEchoController{}
+	var r domain.UserRepository
+	return &GetUserByIDEchoController{
+		uc: application.NewGetUserByIDUC(r),
+	}
 }
 
 func (c *GetUserByIDEchoController) Invoke(ctx echo.Context) error {
@@ -21,5 +28,10 @@ func (c *GetUserByIDEchoController) Invoke(ctx echo.Context) error {
 		return err
 	}
 
-	return nil
+	user, err := c.uc.Invoke(id)
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(http.StatusOK, user)
 }
