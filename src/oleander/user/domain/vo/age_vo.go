@@ -36,3 +36,7 @@ func (vo *AgeVO) enforceLess130AgeValue(value int) error {
 	}
 	return nil
 }
+
+func (vo *AgeVO) GetValue() int {
+	return vo.value
+}

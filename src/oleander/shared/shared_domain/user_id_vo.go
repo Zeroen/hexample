@@ -18,3 +18,7 @@ func NewUserIDValueVO(value string) (*UserIDValueVO, error) {
 func (e *UserIDValueVO) GetValue() string {
 	return e.value.GetValue()
 }
+
+func (e *UserIDValueVO) String() string {
+	return e.value.GetValue()
+}

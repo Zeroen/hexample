@@ -1,8 +1,8 @@
 package domain
 
 import (
-	"hexample.com/src/shared/shared_domain"
-	"hexample.com/src/shared/shared_domain/criteria"
+	"hexample.com/src/oleander/shared/shared_domain"
+	"hexample.com/src/oleander/shared/shared_domain/criteria"
 )
 
 type UserRepository interface {
@@ -10,7 +10,7 @@ type UserRepository interface {
 	Count() (int, error)
 	SearchAll() ([]*UserAG, error)
 	SearchBy(criteria *criteria.Criteria) ([]*UserAG, error)
-	SearchByID(id *shared_domain.UserIDValueVO) (*UserAG, error)
+	SearchByID(id shared_domain.UserIDValueVO) (*UserAG, error)
 	Save(u *UserAG) error
 	Update(u *UserAG) error
 	Delete(u *UserAG) error

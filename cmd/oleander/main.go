@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/labstack/echo"
-	"hexample.com/src/user/infrastructure"
+	"hexample.com/src/oleander/user/infrastructure"
 	"net/http"
 )
 
@@ -14,12 +14,10 @@ func main() {
 	})
 
 	c := infrastructure.NewGetUserByIDEchoController()
-
 	e.GET("/user/:id", c.Invoke)
 
-	e.POST("/user/:id", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	cCreate := infrastructure.NewCreateUserEchoController()
+	e.POST("/user/:id", cCreate.Invoke)
 
 	e.PATCH("/user/:id", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")

@@ -24,3 +24,7 @@ func (vo *NameVO) enforceNonEmptyName(value string) error {
 	}
 	return nil
 }
+
+func (vo *NameVO) GetValue() string {
+	return vo.value
+}

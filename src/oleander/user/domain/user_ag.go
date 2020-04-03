@@ -1,8 +1,8 @@
 package domain
 
 import (
-	"hexample.com/src/shared/shared_domain"
-	"hexample.com/src/user/domain/vo"
+	"hexample.com/src/oleander/shared/shared_domain"
+	"hexample.com/src/oleander/user/domain/vo"
 )
 
 type UserAG struct {
@@ -12,13 +12,6 @@ type UserAG struct {
 	age  *vo.AgeVO
 
 	email shared_domain.EmailIDValueVO
-}
-
-type userDTO struct {
-	ID string
-	Age int
-	Name string
-	Email stri
 }
 
 func NewUser(
@@ -33,4 +26,20 @@ func NewUser(
 		age:   age,
 		email: email,
 	}, nil
+}
+
+func (a *UserAG) GetID() string {
+	return a.id.GetValue()
+}
+
+func (a *UserAG) GetAge() int {
+	return a.age.GetValue()
+}
+
+func (a *UserAG) GetName() string {
+	return a.name.GetValue()
+}
+
+func (a *UserAG) GetEmail() string {
+	return a.GetEmail()
 }

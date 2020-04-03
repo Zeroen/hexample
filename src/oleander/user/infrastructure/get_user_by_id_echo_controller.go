@@ -2,9 +2,9 @@ package infrastructure
 
 import (
 	"github.com/labstack/echo"
-	"hexample.com/src/shared/shared_domain"
-	application "hexample.com/src/user/application/get_id"
-	"hexample.com/src/user/domain"
+	"hexample.com/src/oleander/shared/shared_domain"
+	application "hexample.com/src/oleander/user/application/get_id"
+	"hexample.com/src/oleander/user/domain"
 	"net/http"
 )
 
@@ -28,7 +28,7 @@ func (c *GetUserByIDEchoController) Invoke(ctx echo.Context) error {
 		return err
 	}
 
-	user, err := c.uc.Invoke(id)
+	user, err := c.uc.Invoke(*id)
 	if err != nil {
 		return err
 	}
