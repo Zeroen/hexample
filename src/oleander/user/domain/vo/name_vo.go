@@ -8,14 +8,16 @@ type NameVO struct {
 
 func NewNameVO(name string) (*NameVO, error) {
 
-	err := NameVO{}.enforceNonEmptyName(name)
+	n := NameVO{
+		value:name,
+	}
+
+	err := n.enforceNonEmptyName(name)
 	if err != nil {
 		return nil, err
 	}
 
-	return &NameVO{
-		value: name,
-	}, nil
+	return &n, nil
 }
 
 func (vo *NameVO) enforceNonEmptyName(value string) error {

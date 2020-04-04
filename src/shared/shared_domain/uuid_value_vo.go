@@ -12,14 +12,16 @@ type UUIDValueVO struct {
 
 func NewUUIDValueVO(value string) (*UUIDValueVO, error) {
 
-	err := UUIDValueVO{}.enforceUUIDformat(value)
+	u := UUIDValueVO{
+		value: value,
+	}
+
+	err := u.enforceUUIDformat(value)
 	if err != nil {
 		return nil, err
 	}
 
-	return &UUIDValueVO{
-		value: value,
-	}, nil
+	return &u, nil
 }
 
 func (vo *UUIDValueVO) GetValue() string {

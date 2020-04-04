@@ -8,19 +8,21 @@ type AgeVO struct {
 
 func NewAgeVO(age int) (*AgeVO, error) {
 
-	err := AgeVO{}.enforcePositiveAgeValue(age)
-	if err != nil {
-		return nil, err
-	}
-
-	err = AgeVO{}.enforceLess130AgeValue(age)
-	if err != nil {
-		return nil, err
-	}
-
-	return &AgeVO{
+	a := AgeVO{
 		value: age,
-	}, nil
+	}
+
+	err := a.enforcePositiveAgeValue(age)
+	if err != nil {
+		return nil, err
+	}
+
+	err = a.enforceLess130AgeValue(age)
+	if err != nil {
+		return nil, err
+	}
+
+	return &a, nil
 }
 
 func (vo *AgeVO) enforcePositiveAgeValue(value int) error {
