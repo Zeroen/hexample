@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"hexample.com/src/oleander/shared/shared_domain"
+	"hexample.com/src/shared/shared_domain"
 )
 
 type GetUserByIDDS struct {

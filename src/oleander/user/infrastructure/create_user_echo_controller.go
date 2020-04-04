@@ -3,10 +3,10 @@ package infrastructure
 import (
 	"errors"
 	"github.com/labstack/echo"
-	"hexample.com/src/oleander/shared/shared_domain"
 	"hexample.com/src/oleander/user/application/create"
 	"hexample.com/src/oleander/user/domain"
 	"hexample.com/src/oleander/user/domain/vo"
+	"hexample.com/src/shared/shared_domain"
 	"net/http"
 )
 

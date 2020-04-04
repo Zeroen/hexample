@@ -2,9 +2,9 @@ package infrastructure
 
 import (
 	"github.com/labstack/echo"
-	"hexample.com/src/oleander/shared/shared_domain"
 	application "hexample.com/src/oleander/user/application/get_id"
 	"hexample.com/src/oleander/user/domain"
+	"hexample.com/src/shared/shared_domain"
 	"net/http"
 )
 

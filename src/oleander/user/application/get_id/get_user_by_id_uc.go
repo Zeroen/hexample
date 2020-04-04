@@ -1,8 +1,8 @@
 package get_id
 
 import (
-	"hexample.com/src/oleander/shared/shared_domain"
 	"hexample.com/src/oleander/user/domain"
+	"hexample.com/src/shared/shared_domain"
 )
 
 type GetUserByIDUC struct {
