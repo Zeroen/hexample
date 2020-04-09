@@ -6,21 +6,25 @@ import (
 	"hexample.com/src/oleander/user/domain"
 	"hexample.com/src/oleander/user/domain/vo"
 	"hexample.com/src/shared/shared_domain"
+	"hexample.com/src/shared/shared_domain/shared_domain_event_bus"
 )
 
 type CreateUserUC struct {
-	r domain.UserRepository
+	eventBus     shared_domain_event_bus.EventBus
+	r            domain.UserRepository
 	searchUserDS *domain.GetUserByIDDS
 }
 
-func NewCreateUserUC(r domain.UserRepository) *CreateUserUC {
+func NewCreateUserUC(eventBus shared_domain_event_bus.EventBus, r domain.UserRepository) *CreateUserUC {
 	return &CreateUserUC{
-		r: r,
+		eventBus:     eventBus,
+		r:            r,
 		searchUserDS: domain.NewGetUserByIDDS(r),
 	}
 }
 
 func (uc *CreateUserUC) Invoke(id shared_domain.UserIDValueVO, name *vo.NameVO, age *vo.AgeVO, emailID shared_domain.EmailIDValueVO) (rErr error) {
+	fmt.Printf("[APPLICATION] | [SERVICE] | CreateUserUC \n")
 
 	err := shared_domain.BeginTX(uc.r)
 	if err != nil {
@@ -46,7 +50,8 @@ func (uc *CreateUserUC) Invoke(id shared_domain.UserIDValueVO, name *vo.NameVO, 
 		return err
 	}
 
-	// EMIT EVENT
+	uc.eventBus.Publish(
+		user.PullDomainEvents())
 
 	return nil
 }

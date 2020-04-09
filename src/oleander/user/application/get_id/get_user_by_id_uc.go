@@ -1,6 +1,7 @@
 package get_id
 
 import (
+	"fmt"
 	"hexample.com/src/oleander/user/domain"
 	"hexample.com/src/shared/shared_domain"
 )
@@ -16,6 +17,7 @@ func NewGetUserByIDUC(r domain.UserRepository) *GetUserByIDUC {
 }
 
 func (uc *GetUserByIDUC) Invoke(id shared_domain.UserIDValueVO) (dto *UserDTO, rErr error) {
+	fmt.Printf("[APPLICATION] | [SERVICE] | GetUserByIDUC \n")
 
 	user, err := uc.searchUserDS.Invoke(id)
 	if err != nil {

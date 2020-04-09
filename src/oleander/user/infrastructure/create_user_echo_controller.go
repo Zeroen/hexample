@@ -2,11 +2,13 @@ package infrastructure
 
 import (
 	"errors"
+	"fmt"
 	"github.com/labstack/echo"
 	"hexample.com/src/oleander/user/application/create"
 	"hexample.com/src/oleander/user/domain"
 	"hexample.com/src/oleander/user/domain/vo"
 	"hexample.com/src/shared/shared_domain"
+	"hexample.com/src/shared/shared_domain/shared_domain_event_bus"
 	"net/http"
 )
 
@@ -21,14 +23,15 @@ type CreateUserDTO struct {
 	EmailID string `json:"emailID"`
 }
 
-func NewCreateUserEchoController() *CreateUserEchoController {
-	var r domain.UserRepository
+func NewCreateUserEchoController(eventBus shared_domain_event_bus.EventBus, r domain.UserRepository) *CreateUserEchoController {
 	return &CreateUserEchoController{
-		uc: create.NewCreateUserUC(r),
+		uc: create.NewCreateUserUC(eventBus, r),
 	}
 }
 
 func (c *CreateUserEchoController) Invoke(ctx echo.Context) error {
+
+	fmt.Printf("[CONTROLLER] | [INFRASTRUCTURE] - CreateUserEchoController \n")
 
 	var dto CreateUserDTO
 	err := ctx.Bind(&dto)

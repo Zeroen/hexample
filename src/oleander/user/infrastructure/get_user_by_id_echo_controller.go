@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"fmt"
 	"github.com/labstack/echo"
 	application "hexample.com/src/oleander/user/application/get_id"
 	"hexample.com/src/oleander/user/domain"
@@ -20,6 +21,8 @@ func NewGetUserByIDEchoController() *GetUserByIDEchoController {
 }
 
 func (c *GetUserByIDEchoController) Invoke(ctx echo.Context) error {
+
+	fmt.Printf("[CONTROLLER] | [INFRASTRUCTURE] - GetUserByIDEchoController \n")
 
 	idParam := ctx.Param("id")
 

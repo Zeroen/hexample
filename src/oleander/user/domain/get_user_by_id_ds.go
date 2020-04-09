@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"fmt"
 	"hexample.com/src/shared/shared_domain"
 )
 
@@ -15,6 +16,7 @@ func NewGetUserByIDDS(r UserRepository) *GetUserByIDDS {
 }
 
 func (ds *GetUserByIDDS) Invoke(id shared_domain.UserIDValueVO) (user *UserAG, rErr error) {
+	fmt.Printf("[DOMAIN] | [SERVICE] | GetUserByIDDS \n")
 
 	user, err := ds.r.SearchByID(id)
 	if err != nil {
