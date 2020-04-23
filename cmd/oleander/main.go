@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/labstack/echo"
+	"hexample.com/src/oleander/datastore/application/dto"
 	infraDs "hexample.com/src/oleander/datastore/infrastructure"
 	"hexample.com/src/oleander/user/application/reset_password"
 	"hexample.com/src/oleander/user/infrastructure"
@@ -74,5 +75,17 @@ func registerDatastoreEndpoints(e *echo.Echo) {
 			return context.String(http.StatusBadRequest, err.Error())
 		}
 		return context.JSON(http.StatusOK, nil)
+	})
+	e.GET("/datastore/:id", func(context echo.Context) error {
+		id := context.Param("id")
+		dto, err := infraDs.NewGetDatastoreByIdController(dsRepo).Invoke(id)
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		if dto == nil {
+			return context.String(http.StatusNotFound, "Datastore not found")
+		}
+
+		return context.JSON(http.StatusOK, dto)
 	})
 }

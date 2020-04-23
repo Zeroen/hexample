@@ -1,4 +1,4 @@
-package list
+package dto
 
 import (
 	"hexample.com/src/oleander/datastore/domain"

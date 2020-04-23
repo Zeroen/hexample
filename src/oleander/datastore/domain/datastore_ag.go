@@ -4,9 +4,11 @@ import (
 	"errors"
 	"hexample.com/src/oleander/datastore/domain/vo"
 	"hexample.com/src/shared/shared_domain"
+	"hexample.com/src/shared/shared_domain/shared_domain_event_bus"
 )
 
 type DatastoreAG struct {
+	shared_domain_event_bus.AggregateRoot
 	id       *shared_domain.DatastoreIDValueVO
 	name     *vo.NameVO
 	path     *vo.PathVO
@@ -20,13 +22,21 @@ func NewDatastoreAG(id *shared_domain.DatastoreIDValueVO, h *vo.HostnameVO,
 		return nil, errors.New("The data store id can't be null")
 	}
 
-	return &DatastoreAG{
+
+	ar := &DatastoreAG{
 		id: id,
 		name: n,
 		path: path,
 		hostname: h,
 		port: port,
-	}, nil
+	}
+
+	// TODO Create domain event
+	//event :=
+	//
+	//ar.Record()
+	//
+	return ar, nil
 }
 
 func (d *DatastoreAG) GetID() string {

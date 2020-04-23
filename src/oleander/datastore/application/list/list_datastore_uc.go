@@ -1,6 +1,9 @@
 package list
 
-import "hexample.com/src/oleander/datastore/domain"
+import (
+	"hexample.com/src/oleander/datastore/application/dto"
+	"hexample.com/src/oleander/datastore/domain"
+)
 
 type ListDatastoreUc struct {
 	r domain.DatastoreRepository
@@ -12,11 +15,11 @@ func NewListDatastoresUc(r domain.DatastoreRepository) *ListDatastoreUc {
 	}
 }
 
-func (uc *ListDatastoreUc) Invoke() ([]*DatastoreDTO, error){
+func (uc *ListDatastoreUc) Invoke() ([]*dto.DatastoreDTO, error){
 	list, err := uc.r.SearchAll()
 	if err != nil {
 		return nil, err
 	}
 
-	return NewDatastoreDTOList(list), nil
+	return dto.NewDatastoreDTOList(list), nil
 }

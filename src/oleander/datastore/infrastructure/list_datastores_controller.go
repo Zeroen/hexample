@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"hexample.com/src/oleander/datastore/application/dto"
 	"hexample.com/src/oleander/datastore/application/list"
 	"hexample.com/src/oleander/datastore/domain"
 )
@@ -15,6 +16,6 @@ func NewListDatastoresController(repository domain.DatastoreRepository) *ListDat
 	}
 }
 
-func (c *ListDatastoresController) Invoke() ([]*list.DatastoreDTO, error) {
+func (c *ListDatastoresController) Invoke() ([]*dto.DatastoreDTO, error) {
 	return c.uc.Invoke()
 }

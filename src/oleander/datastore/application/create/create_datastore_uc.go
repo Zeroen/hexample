@@ -8,12 +8,14 @@ import (
 )
 
 type CreateDatastoreUc struct {
-	r domain.DatastoreRepository
+	r                      domain.DatastoreRepository
+	GetDatastoreSearchById *domain.GetDatastoreByIdDs
 }
 
 func NewCreateDatastoreUc(r domain.DatastoreRepository) *CreateDatastoreUc {
 	return &CreateDatastoreUc{
-		r: r,
+		r:                      r,
+		GetDatastoreSearchById: domain.NewGetDatastoreByIdDs(r),
 	}
 }
 
@@ -26,7 +28,7 @@ func (uc *CreateDatastoreUc) Invoke(id *shared_domain.DatastoreIDValueVO,
 	defer shared_domain.EndTX(uc.r, &rErr)
 
 	// Check if the element already exists
-	dsSearch, err := uc.r.SearchByID(*id)
+	dsSearch, err := uc.GetDatastoreSearchById.Invoke(*id)
 	if err != nil {
 		return err
 	}
