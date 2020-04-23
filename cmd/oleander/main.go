@@ -61,4 +61,18 @@ func registerDatastoreEndpoints(e *echo.Echo) {
 
 		return context.JSON(http.StatusOK, dsList)
 	})
+	e.POST("/datastore/:id", func(context echo.Context) error {
+		id := context.Param("id")
+		var dto infraDs.CreateDatastoreDTO
+		err := context.Bind(&dto)
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		dto.ID = id
+		err = infraDs.NewCreateDatastoreController(dsRepo).Invoke(&dto)
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		return context.JSON(http.StatusOK, nil)
+	})
 }

@@ -5,14 +5,13 @@ type DatastoreIDValueVO struct {
 }
 
 func NewDatastoreIDValueVO(value string) (*DatastoreIDValueVO, error) {
-	// TODO Can this method be reused?
-	u, err := NewUUIDValueVO(value)
+	d, err := NewUUIDValueVO(value)
 	if err != nil {
 		return nil, err
 	}
 
 	return &DatastoreIDValueVO{
-		value: *u,
+		value: *d,
 	}, nil
 }
 

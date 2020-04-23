@@ -31,10 +31,41 @@ func (r *DummyDatastoreRepository) Rollback() error {
 
 func (r *DummyDatastoreRepository) SearchAll() ([]*domain2.DatastoreAG, error) {
 	fmt.Printf("[DOMAIN] | [INVERSION] | [INFRASTRUCTURE] | [DummyDatastoreRepository] - SearchAll \n")
-	return nil, nil
+
+	id1, err := shared_domain.NewDatastoreIDValueVO("fbf3287a-1032-4072-939b-e705c08fcd75")
+	if err != nil {
+		return nil, err
+	}
+	id2, err := shared_domain.NewDatastoreIDValueVO("fd49cef4-f317-4840-8dc0-164d539efd77")
+	if err != nil {
+		return nil, err
+	}
+	id3, err := shared_domain.NewDatastoreIDValueVO("fd49cef4-f317-4840-8dc0-164d539efd86")
+	if err != nil {
+		return nil, err
+	}
+
+	obj1, err := domain2.NewDatastoreAG(id1, nil, nil, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	obj2, err := domain2.NewDatastoreAG(id2, nil, nil, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	obj3, err := domain2.NewDatastoreAG(id3, nil, nil, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	datastore := []*domain2.DatastoreAG{
+		obj1, obj2, obj3,
+	}
+
+	return datastore, nil
 }
 
-func (r *DummyDatastoreRepository) SearchByID(id shared_domain.UserIDValueVO) (*domain2.DatastoreAG, error) {
+func (r *DummyDatastoreRepository) SearchByID(id shared_domain.DatastoreIDValueVO) (*domain2.DatastoreAG, error) {
 	fmt.Printf("[DOMAIN] | [INVERSION] | [INFRASTRUCTURE] | [DummyDatastoreRepository] - SearchByID \n")
 	return nil, nil
 }
