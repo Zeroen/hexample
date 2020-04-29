@@ -2,6 +2,7 @@ package domain
 
 import (
 	"errors"
+	"hexample.com/src/oleander/datastore/domain/events"
 	"hexample.com/src/oleander/datastore/domain/vo"
 	"hexample.com/src/shared/shared_domain"
 	"hexample.com/src/shared/shared_domain/shared_domain_event_bus"
@@ -17,11 +18,12 @@ type DatastoreAG struct {
 }
 
 func NewDatastoreAG(id *shared_domain.DatastoreIDValueVO, h *vo.HostnameVO,
-	n *vo.NameVO, path *vo.PathVO, port *vo.PortVO) (*DatastoreAG, error) {
+	n *vo.NameVO, path *vo.PathVO, port *vo.PortVO, userId *shared_domain.UserIDValueVO) (*DatastoreAG, error) {
 	if id == nil {
 		return nil, errors.New("The data store id can't be null")
 	}
 
+	// TODO Here can go all required guard clause
 
 	ar := &DatastoreAG{
 		id: id,
@@ -31,11 +33,8 @@ func NewDatastoreAG(id *shared_domain.DatastoreIDValueVO, h *vo.HostnameVO,
 		port: port,
 	}
 
-	// TODO Create domain event
-	//event :=
-	//
-	//ar.Record()
-	//
+	ar.Record(events.NewDatastoreCreatedEvent(ar.GetID(), userId.GetValue()))
+
 	return ar, nil
 }
 

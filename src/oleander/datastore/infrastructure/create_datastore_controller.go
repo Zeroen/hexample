@@ -6,6 +6,7 @@ import (
 	"hexample.com/src/oleander/datastore/domain"
 	"hexample.com/src/oleander/datastore/domain/vo"
 	"hexample.com/src/shared/shared_domain"
+	"hexample.com/src/shared/shared_domain/shared_domain_event_bus"
 )
 
 type CreateDatastoreController struct {
@@ -20,13 +21,13 @@ type CreateDatastoreDTO struct {
 	Port     int    `json:"port"`
 }
 
-func NewCreateDatastoreController(r domain.DatastoreRepository) *CreateDatastoreController {
+func NewCreateDatastoreController(r domain.DatastoreRepository, bus shared_domain_event_bus.EventBus) *CreateDatastoreController {
 	return &CreateDatastoreController{
-		uc: create.NewCreateDatastoreUc(r),
+		uc: create.NewCreateDatastoreUc(r, bus),
 	}
 }
 
-func (c *CreateDatastoreController) Invoke(dto *CreateDatastoreDTO) error {
+func (c *CreateDatastoreController) Invoke(dto *CreateDatastoreDTO, userId *shared_domain.UserIDValueVO) error {
 
 	fmt.Printf("[CONTROLLER] | [INFRASTRUCTURE] - CreateDatastoreController \n")
 
@@ -40,7 +41,7 @@ func (c *CreateDatastoreController) Invoke(dto *CreateDatastoreDTO) error {
 	hostname := vo.NewHostnameVO(dto.Hostname)
 	port := vo.NewPortVO(dto.Port)
 
-	err = c.uc.Invoke(id, name, path, hostname, port)
+	err = c.uc.Invoke(id, name, path, hostname, port, userId)
 	if err != nil {
 		return err
 	}

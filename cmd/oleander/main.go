@@ -2,10 +2,12 @@ package main
 
 import (
 	"github.com/labstack/echo"
-	"hexample.com/src/oleander/datastore/application/dto"
 	infraDs "hexample.com/src/oleander/datastore/infrastructure"
+	"hexample.com/src/oleander/user/application/datastore_counter"
 	"hexample.com/src/oleander/user/application/reset_password"
 	"hexample.com/src/oleander/user/infrastructure"
+	"hexample.com/src/shared/shared_domain"
+	"hexample.com/src/shared/shared_domain/shared_domain_event_bus"
 	"hexample.com/src/shared/shared_infrastructure/shared_infra_event_bus"
 	"net/http"
 )
@@ -36,13 +38,30 @@ func main() {
 	})
 	cResetPassword := infrastructure.NewResetUserPasswordEchoController(ur)
 	e.POST("/user/:id/password/reset", cResetPassword.Invoke)
+	incrementDsCounterController := infraDs.NewIncreaseDsCounterPutController(ur, eventBus)
+	e.PUT("/user/:id/datastore/increment", func(context echo.Context) error {
+		userId, err := shared_domain.NewUserIDValueVO(context.Param("id"))
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		err = incrementDsCounterController.Invoke(userId)
+		if err != nil {
+			return context.String(http.StatusInternalServerError, err.Error())
+		}
+		return nil
+	})
 
 	// Register datastore endpoints
-	registerDatastoreEndpoints(e)
+	registerDatastoreEndpoints(e, eventBus)
 
 	// Register subscribers
 	rpoucd := reset_password.NewResetPasswordUCOnUserCreatedDomainEvent(ur)
 	err = eventBus.RegisterOnEventBus(rpoucd)
+	if err != nil {
+		panic(err)
+	}
+	ndscsubs := datastore_counter.NewIncreaseDatastoreCounterOnDsCreatedEvent(ur, eventBus)
+	err = eventBus.RegisterOnEventBus(ndscsubs)
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +70,7 @@ func main() {
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func registerDatastoreEndpoints(e *echo.Echo) {
+func registerDatastoreEndpoints(e *echo.Echo, eventBus shared_domain_event_bus.EventBus) {
 	dsRepo := infraDs.NewDummyDatastoreRepository()
 	e.GET("/datastore", func(context echo.Context) error {
 		c := infraDs.NewListDatastoresController(dsRepo)
@@ -70,7 +89,11 @@ func registerDatastoreEndpoints(e *echo.Echo) {
 			return context.String(http.StatusBadRequest, err.Error())
 		}
 		dto.ID = id
-		err = infraDs.NewCreateDatastoreController(dsRepo).Invoke(&dto)
+		userId, err := shared_domain.NewUserIDValueVO("056006bf-20e0-46f8-b63c-b2f5f32272b7")
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		err = infraDs.NewCreateDatastoreController(dsRepo, eventBus).Invoke(&dto, userId)
 		if err != nil {
 			return context.String(http.StatusBadRequest, err.Error())
 		}

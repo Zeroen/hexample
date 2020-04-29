@@ -45,15 +45,15 @@ func (r *DummyDatastoreRepository) SearchAll() ([]*domain2.DatastoreAG, error) {
 		return nil, err
 	}
 
-	obj1, err := domain2.NewDatastoreAG(id1, nil, nil, nil, nil)
+	obj1, err := domain2.NewDatastoreAG(id1, nil, nil, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
-	obj2, err := domain2.NewDatastoreAG(id2, nil, nil, nil, nil)
+	obj2, err := domain2.NewDatastoreAG(id2, nil, nil, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
-	obj3, err := domain2.NewDatastoreAG(id3, nil, nil, nil, nil)
+	obj3, err := domain2.NewDatastoreAG(id3, nil, nil, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
