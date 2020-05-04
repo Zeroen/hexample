@@ -38,7 +38,7 @@ func (uc *IncreaseDatastoreCounterOnDsCreatedEvent) Consume(event []byte) {
 		// TODO
 	}
 	
-	err = uc.Invoke(usId)
+	err = uc.increaseDsCounterUc.Invoke(usId)
 	if err != nil {
 		// TODO Si falla este, que leches hacemos
 		// O Logeamos un error o reintentamos....
