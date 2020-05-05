@@ -18,6 +18,8 @@ type UserAG struct {
 	password vo.PasswordVO
 
 	email shared_domain.EmailIDValueVO
+
+	datastoresCounter *vo.DatastoresCounterVo
 }
 
 func NewUser(
@@ -31,6 +33,7 @@ func NewUser(
 		name:  name,
 		age:   age,
 		email: email,
+		datastoresCounter: vo.NewDatastoresCounterVo(),
 	}
 
 	userAG.Record(events.NewUserCreatedDomainEvent(id.GetValue()))
@@ -58,4 +61,8 @@ func (a *UserAG) ResetPassword() {
 	fmt.Printf("[DOMAIN] | [USERAG] - RESET PASSWORD \n")
 
 	a.password.CalculateNewPassword()
+}
+
+func (a *UserAG) Increase() {
+	a.datastoresCounter.Increase()
 }
