@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/labstack/echo"
+	"hexample.com/src/oleander/branch_location/infrastucture"
 	infraDs "hexample.com/src/oleander/datastore/infrastructure"
 	"hexample.com/src/oleander/user/application/datastore_counter"
 	"hexample.com/src/oleander/user/application/reset_password"
@@ -53,6 +54,9 @@ func main() {
 
 	// Register datastore endpoints
 	registerDatastoreEndpoints(e, eventBus)
+
+	// Register BranchLocation endpoints
+	registerBranchLocationEndpoints(e, eventBus)
 
 	// Register subscribers
 	rpoucd := reset_password.NewResetPasswordUCOnUserCreatedDomainEvent(ur)
@@ -110,5 +114,42 @@ func registerDatastoreEndpoints(e *echo.Echo, eventBus shared_domain_event_bus.E
 		}
 
 		return context.JSON(http.StatusOK, dto)
+	})
+}
+
+func registerBranchLocationEndpoints(e *echo.Echo, eventBus shared_domain_event_bus.EventBus) {
+	dsRepo := infrastucture.NewDummyBranchLocationRepository()
+	e.GET("/branchLocation/:id", func(context echo.Context) error {
+		id := context.Param("id")
+		var dto infrastucture.FindByIDBranchLocationDTO
+		err := context.Bind(&dto)
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		dto.ID = id
+		dtoRes, err := infrastucture.NewFindByIDBranchLocationController(dsRepo).Invoke(dto)
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		if dtoRes == nil {
+			return context.String(http.StatusNotFound, "Branch Location not found")
+		}
+
+		return context.JSON(http.StatusOK, dto)
+	})
+
+	e.POST("/branchLocation/:id", func(context echo.Context) error {
+		id := context.Param("id")
+		var dto infrastucture.CreateBranchLocationDTO
+		err := context.Bind(&dto)
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		dto.ID = id
+		err = infrastucture.NewCreateBranchLocationController(dsRepo).Invoke(&dto)
+		if err != nil {
+			return context.String(http.StatusBadRequest, err.Error())
+		}
+		return context.JSON(http.StatusOK, nil)
 	})
 }
